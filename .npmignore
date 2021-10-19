@@ -1,0 +1,29 @@
+# folders
+.git/
+.github/
+.vscode/
+node_modules/
+scripts/
+src/
+tests/
+
+# configs
+.editorconfig
+.eslintignore
+.eslintrc.yml
+.huskyrc.yml
+.lintstagedrc.yml
+.prettierrc.yml
+.prettierrc.yml
+
+# file control
+.gitignore
+.npmignore
+
+# build
+bitbucket-pipelines.yml
+tsconfig.json
+tsconfig.paths.json
+
+#logs
+*.log

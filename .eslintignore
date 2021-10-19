@@ -1,0 +1,11 @@
+node_modules/
+**/node_modules/
+.git/
+dist/
+**/dist/
+debug/
+**/debug/
+test/
+**/test/
+**/*.js
+deploy/*
