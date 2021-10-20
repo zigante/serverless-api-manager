@@ -1,20 +1,18 @@
+import { Context } from './classes';
 import { Services } from './enums';
 import { assertRequiredParamterWasProvided, getService } from './helpers';
-import { Context, IAction, IService } from './interfaces';
-import { AnyRecord, Response } from './types';
+import { IAction } from './interfaces';
+import { AnyRecord, Response, ServerlessApiManagerProps } from './types';
 
 export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<string, AnyRecord>> {
   private _action: IAction;
   private _contextId: string;
   private _event: Event;
-  private _instance: IService;
   private _service: Services;
   private _context = {} as ContextProps;
   private _logger: Console = console;
 
-  constructor(
-    props: { event?: Event; action?: IAction; contextId?: string; logger?: Console; service?: Services } = {},
-  ) {
+  constructor(props: ServerlessApiManagerProps<Event> = {}) {
     const { action, contextId, service, logger, event } = props;
 
     action && (this._action = action);

@@ -2,10 +2,15 @@
   "name": "serverless-api-manager",
   "version": "1.0.0",
   "description": "Optmized web framework for serverless environment",
-  "main": ".bin/index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo 'npm run test'",
-    "dev": "node -r ts-node/register -r tsconfig-paths/register debug/index.ts"
+    "precompile": "rm -rf dist/",
+    "compile": "tsc -p .",
+    "postcompile": "tsc-alias",
+    "dev": "node -r ts-node/register -r tsconfig-paths/register debug/index.ts",
+    "test": "npm run test:unit && npm run test:e2e",
+    "test:unit": "echo 'npm run test:unit'",
+    "test:e2e": "echo 'npm run test:e2e'"
   },
   "repository": {
     "type": "git",
@@ -30,7 +35,7 @@
   },
   "homepage": "https://github.com/zigante/serverless-api-manager#readme",
   "files": [
-    ".bin/",
+    "dist/",
     "LICENSE.md",
     "package.json",
     "README.me"

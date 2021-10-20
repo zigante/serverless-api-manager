@@ -1,4 +1,4 @@
-import { Context } from '@/interfaces';
+import { Context } from '@/classes';
 import { AnyRecord } from './';
 
 export type ExecutorHandler<ContextProps = AnyRecord> = (
