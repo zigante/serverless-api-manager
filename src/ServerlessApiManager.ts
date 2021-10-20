@@ -24,7 +24,7 @@ export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<strin
 
   withService = (service: Services) => {
     assertRequiredParamterWasProvided('service', service);
-    this._logger.debug('Adding service...');
+    this._logger.debug?.('Adding service...');
 
     this._service = service;
     return this;
@@ -32,7 +32,7 @@ export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<strin
 
   withLogger = (logger: Console) => {
     assertRequiredParamterWasProvided('logger', logger);
-    this._logger.debug('Adding logger...');
+    this._logger.debug?.('Adding logger...');
 
     this._logger = logger;
     return this;
@@ -45,7 +45,7 @@ export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<strin
 
   withAction = (action: IAction<ContextProps>) => {
     assertRequiredParamterWasProvided('action', action);
-    this._logger.debug('Adding action...');
+    this._logger.debug?.('Adding action...');
 
     this._action = action;
     return this;
@@ -53,7 +53,7 @@ export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<strin
 
   withEvent = (event: Event) => {
     assertRequiredParamterWasProvided('event', event);
-    this._logger.debug('Adding event...');
+    this._logger.debug?.('Adding event...');
 
     this._event = event;
     return this;
@@ -61,7 +61,7 @@ export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<strin
 
   withContext = (context: ContextProps) => {
     assertRequiredParamterWasProvided('context', context);
-    this._logger.debug('Adding context...');
+    this._logger.debug?.('Adding context...');
 
     this._context = context;
     return this;

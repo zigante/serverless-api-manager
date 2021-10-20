@@ -1,10 +1,15 @@
-# The Logs
+# Serverless Api Manager
 
-Stop using `console.log` and use this simple logs API at your daily proccess
+Optimized web framework for serverless environment
 
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
-[![Build][build-badge]][repository-url]
+
+---
+
+### To prevent the cold-start of serverless functions from getting too long, a good alternative is not to use [Express](https://www.npmjs.com/package/express) as it simulates the creation of an entire server and configures all routes and all middlewares of each of the routes, with only 1 being used.s
+
+---
 
 ### Installation
 
@@ -20,81 +25,64 @@ Installation is done using the
 [`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
 
 ```bash
-$ npm install --save the-logs
+$ npm install --save serverless-api-manager
 ```
 
 ### Usage
 
 ```ts
-// First of all, you should create a instance of the logger
-// This code goes before your application entry point
+// index.ts
 
-import { Logger, LogLevel } from 'the-logs';
+import type { APIGatewayEvent } from 'aws-lambda';
+import AnyLoggerLibrary from 'any-logger-library';
+import { ServerlessApiManager, Services } from 'serverless-api-manager';
+import { MyAction } from './actions/my-action';
+import { IContext } from './interfaces/IContext';
 
-Logger.buildLogger({
-  serviceName: 'service-name',
-  serviceVersion: '1.0.0',
-  logLevel: LogLevel.Debug,
-  environment: process.env.NODE_ENV,
-  useCase: 'My example',
-});
+export const handler = async (event: APIGatewayEvent) => {
+  const manager = new ServerlessApiManager<APIGatewayEvent, IContext>()
+    .withEvent(event)
+    .withService(Services.API_GATEWAY)
+    .withContextId('13245-12345-13245-12345')
+    .withLogger(new AnyLoggerLibrary())
+    .withContext({ appName: 'my-example' })
+    .withAction(new MyAction());
+
+  return manager.run();
+};
 ```
 
 ```ts
-// This code goes in any file of your project
-// Creates your logger object
+// interfaces/IContext.ts
 
-let logger = Logger.getLogger({ interUseCase: 'First logs wave' });
-logger.debug('This is a debug log'); // [service-name@1.0.0][My example][First logs wave] - [Debug] This is a debug log
-logger.info('This is an info log'); // [service-name@1.0.0][My example][First logs wave] - [Info] This is an info log
-logger.error('This is an error log'); // [service-name@1.0.0][My example][First logs wave] - [Error] This is an error log
-
-// Updates your logger with other log level
-logger = Logger.getLogger({ logLevel: LogLevel.Error });
-logger.debug('This is a debug log'); //
-logger.info('This is an info log'); //
-logger.error('This is an error log'); // [service-name@1.0.0][My example] - [Error] This is an error log
-
-// Updates your logger with other log level and add an interUseCase
-logger = Logger.getLogger({ interUseCase: 'Last logs wave', logLevel: LogLevel.Info });
-logger.debug('This is a debug log'); //
-logger.info('This is an info log'); // [service-name@1.0.0][My example][Last logs wave] - [Info] This is an info log
-logger.error('This is an error log'); // [service-name@1.0.0][My example][Last logs wave] - [Error] This is an error log
+export interface IContext {
+  appName: string;
+}
 ```
 
-### Features
+```ts
+// actions/my-action.ts
 
-- [x] Log at console
-- [x] Refactor and use Singleton pattern
-- [x] Add multiple configs to track logs beetwen process
-- [x] Log at .log file
-- [ ] Create platform to display logs
-- [ ] Create writer to be consumed by platform
-- [ ] Create metrics using logs
-- [ ] Create custom metrics
-- [ ] Create notifications system
+import { IContext } from '../interfaces/IContext';
 
-### Configs
+export class MyAction implements IAction<IContext> {
+  execute: ExecutorHandler<IContext> = (request, response) => {
+    const { body, context, headers, params, query } = request;
+    context.logger.debug(`Initializing my action: ${context.appName}`);
 
-| LogLevel |     | Environment |     | Platform   |     | Writers |
-| -------- | --- | ----------- | --- | ---------- | --- | ------- |
-| Debug    |     | Beta        |     | Container  |     | Console |
-| Info     |     | Development |     | Docker     |     | File    |
-| Notice   |     | Production  |     | Instance   |     | -       |
-| Warning  |     | Stable      |     | Lambda     |     | -       |
-| Error    |     | Staging     |     | Serverless |     | -       |
-| Critical |     | Test        |     | VM         |     | -       |
-| -        |     | Testing     |     | -          |     | -       |
+    // ALL YOUR CODE GOES HERE
 
-### LogLevel Hierarchy
+    context.logger.debug('Sending my response');
+    return response
+      .headers({ ...headers, 'content-type': 'application/json' })
+      .status(200)
+      .json({ foo: 'bar', body, params, query });
+  };
+}
+```
 
-##### Log levels below the configured level won't be logged
-
-Critical > Error > Warning > Notice > Info > Debug
-
-[npm-image]: https://img.shields.io/npm/v/the-logs
-[npm-url]: https://npmjs.org/package/the-logs
-[downloads-image]: https://img.shields.io/npm/dm/the-logs.svg
-[downloads-url]: https://npmcharts.com/compare/the-logs?minimal=true
-[build-badge]: https://github.com/zigante/the-logs/workflows/Compiler/badge.svg?branch=main
-[repository-url]: https://github.com/zigante/the-logs#readme
+[npm-image]: https://img.shields.io/npm/v/serverless-api-manager
+[npm-url]: https://npmjs.org/package/serverless-api-manager
+[downloads-image]: https://img.shields.io/npm/dm/serverless-api-manager.svg
+[downloads-url]: https://npmcharts.com/compare/serverless-api-manager?minimal=true
+[repository-url]: https://github.com/zigante/serverless-api-manager#readme
