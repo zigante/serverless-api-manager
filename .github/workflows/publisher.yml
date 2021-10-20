@@ -1,0 +1,43 @@
+name: Publisher
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publisher:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Configuring environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Checking version
+        run: |
+          node -v
+          npm i -g npm@latest
+          npm -v
+      - name: Installing Dependencies
+        run: |
+          rm -rf node_modules
+          npm ci
+      - name: Linting Project
+        run: |
+          npx prettier ./src/**/*.ts --write
+          npx eslint ./src/**/*.ts
+      - name: Compiling Project
+        run: |
+          rm -rf build
+          tsc -p .
+          npx tsc-alias
+      - name: Publishing on npm
+        run: |
+          npm publish --access public
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
