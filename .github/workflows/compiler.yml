@@ -20,6 +20,7 @@ jobs:
           node -v
           npm i -g npm@latest
           npm -v
+          echo ${{ secrets.NPM_TOKEN }}
       - name: Installing Dependencies
         run: |
           rm -rf node_modules
