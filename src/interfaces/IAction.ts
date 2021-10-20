@@ -1,5 +1,5 @@
-import { ExecutorHandler } from '@/types';
+import { AnyRecord, ExecutorHandler } from '@/types';
 
-export interface IAction {
-  execute: ExecutorHandler;
+export interface IAction<ContextProps = AnyRecord> {
+  execute: ExecutorHandler<ContextProps>;
 }

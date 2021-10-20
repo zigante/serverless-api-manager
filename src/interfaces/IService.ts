@@ -1,7 +1,7 @@
-import { AnyRecord, Request } from '@/types';
+import { AnyRecord, IRequest } from '@/types';
 
 export class IService<Event = AnyRecord, Return = AnyRecord> {
-  build = (_event: Event): Request => {
+  build = (_event: Event): IRequest => {
     throw new Error('Not implemented');
   };
   end = (_result: IServiceResult): Return => {

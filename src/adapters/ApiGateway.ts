@@ -1,9 +1,9 @@
 import { IService, IServiceResult } from '@/interfaces';
-import { Request } from '@/types';
+import { IRequest } from '@/types';
 import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 export class ApiGateway extends IService<APIGatewayEvent, APIGatewayProxyResult> {
-  build = (event: APIGatewayEvent): Request => {
+  build = (event: APIGatewayEvent): IRequest => {
     const { body, headers = {}, pathParameters = {}, queryStringParameters = {} } = event;
 
     return {
@@ -11,7 +11,7 @@ export class ApiGateway extends IService<APIGatewayEvent, APIGatewayProxyResult>
       headers,
       params: pathParameters,
       query: queryStringParameters,
-    } as unknown as Request;
+    } as unknown as IRequest;
   };
 
   end = (result: IServiceResult): APIGatewayProxyResult => {

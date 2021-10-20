@@ -2,10 +2,10 @@ import { Context } from './classes';
 import { Services } from './enums';
 import { assertRequiredParamterWasProvided, getService } from './helpers';
 import { IAction } from './interfaces';
-import { AnyRecord, Response, ServerlessApiManagerProps } from './types';
+import { AnyRecord, IResponse, ServerlessApiManagerProps } from './types';
 
 export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<string, AnyRecord>> {
-  private _action: IAction;
+  private _action: IAction<ContextProps>;
   private _contextId: string;
   private _event: Event;
   private _service: Services;
@@ -43,7 +43,7 @@ export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<strin
     return this;
   };
 
-  withAction = (action: IAction) => {
+  withAction = (action: IAction<ContextProps>) => {
     assertRequiredParamterWasProvided('action', action);
     this._logger.debug('Adding action...');
 
@@ -74,11 +74,15 @@ export class ServerlessApiManager<Event = AnyRecord, ContextProps = Record<strin
 
     const instance = new getService[this._service]();
     if (!instance) throw new Error(`Unknown service '${this._service}'`);
-    const context = new Context<ContextProps>({ contextId: this._contextId, logger: this._logger, ...this._context });
 
     const request = instance.build(this._event);
+    const response = new IResponse();
+    const context = new Context<ContextProps>({
+      contextId: this._contextId,
+      logger: this._logger,
+      ...this._context,
+    }) as Context & ContextProps;
 
-    const response = new Response();
     await this._action.execute({ ...request, context }, response);
 
     return instance.end({ body: response._body, headers: {}, status: response._code });

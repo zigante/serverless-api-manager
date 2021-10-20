@@ -1,7 +1,7 @@
 import { AnyRecord } from '@/types';
 import { randomUUID } from 'crypto';
 
-export class Context<Props = Record<string, AnyRecord>> {
+export class Context<Props = AnyRecord> {
   logger: Console;
   contextId: string;
 

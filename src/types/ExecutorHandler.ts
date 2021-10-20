@@ -1,31 +1,25 @@
 import { Context } from '@/classes';
-import { AnyRecord } from './';
+import { AnyRecord, StringRecord } from './';
 
 export type ExecutorHandler<ContextProps = AnyRecord> = (
-  request: Request<ContextProps>,
-  response: Response,
-) => Response | Promise<Response>;
+  request: IRequest<ContextProps>,
+  response: IResponse,
+) => IResponse | Promise<IResponse>;
 
-export type Request<
-  ContextProps = AnyRecord,
-  Body = Record<string, string>,
-  Headers = Record<string, string>,
-  Params = Record<string, string>,
-  Query = Record<string, string>,
-> = {
-  body: Body;
-  headers: Headers;
-  params: Params;
-  query: Query;
-  context: Context<ContextProps>;
+export type IRequest<ContextProps = AnyRecord> = {
+  body: StringRecord;
+  context: Context & ContextProps;
+  headers: StringRecord;
+  params: StringRecord;
+  query: StringRecord;
 };
 
-export class Response {
+export class IResponse {
   _code: number;
   _body: AnyRecord;
-  _headers: Record<string, string>;
+  _headers: StringRecord;
 
-  headers = (data: Record<string, string>) => {
+  headers = (data: StringRecord) => {
     this._headers = data;
     return this;
   };
