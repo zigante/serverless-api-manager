@@ -16,7 +16,7 @@
     "noImplicitReturns": true,
     "pretty": true,
     "experimentalDecorators": true,
-    "outDir": ".bin",
+    "outDir": "dist",
     "allowJs": false,
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -24,7 +24,7 @@
     "lib": ["ES6"],
     "strictPropertyInitialization": false
   },
-  "include": ["src/**/*", "package.json"],
+  "include": ["src/**/*"],
   "exclude": [
     "_warmup/**/*",
     ".bin/**/*",
