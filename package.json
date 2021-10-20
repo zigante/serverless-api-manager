@@ -10,7 +10,8 @@
     "dev": "node -r ts-node/register -r tsconfig-paths/register debug/index.ts",
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "echo 'npm run test:unit'",
-    "test:e2e": "echo 'npm run test:e2e'"
+    "test:e2e": "echo 'npm run test:e2e'",
+    "prepublish": "node scripts/prepublish.js"
   },
   "repository": {
     "type": "git",
@@ -38,7 +39,7 @@
     "dist/",
     "LICENSE.md",
     "package.json",
-    "README.me"
+    "README.md"
   ],
   "devDependencies": {
     "@types/aws-lambda": "8.10.84",
