@@ -1,7 +1,7 @@
 {
   "name": "serverless-api-manager",
   "version": "1.0.0",
-  "description": "Optmized web framework for serverless environment",
+  "description": "Optimized web framework for serverless environment",
   "main": "dist/index.js",
   "scripts": {
     "precompile": "rm -rf dist/",
