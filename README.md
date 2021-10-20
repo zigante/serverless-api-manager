@@ -7,7 +7,7 @@ Optimized web framework for serverless environment
 
 ---
 
-### To prevent the cold-start of serverless functions from getting too long, a good alternative is not to use [Express](https://www.npmjs.com/package/express) as it simulates the creation of an entire server and configures all routes and all middlewares of each of the routes, with only 1 being used.s
+### To prevent the cold-start of serverless functions from getting too long, a good alternative is not to use [Express](https://www.npmjs.com/package/express) as it simulates the creation of an entire server and configures all routes and all middlewares of each of the routes, with only 1 being used.
 
 ---
 
